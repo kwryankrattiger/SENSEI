@@ -9,6 +9,7 @@ packages:
   conduit:
     variants: ~hdf5_compat
   paraview:
+    version: [5.9.1]
     variants: +osmesa ~qt
   vtk:
     variants: +osmesa ~qt
