@@ -13,6 +13,7 @@ dnf install -y --setopt=install_weak_deps=False \
   g++ \
   gfortran \
   gzip \
+  Lmod \
   patch \
   python \
   pip \
@@ -23,9 +24,6 @@ dnf install -y --setopt=install_weak_deps=False \
   xz \
   zstd
 
-# Install clingo for new concretizer
-pip install clingo
-
 if [[ -z ${SPACK_ROOT} ]]; then
   if [[ ! -z $1 ]]; then
     SPACK_ROOT=$1
@@ -34,12 +32,16 @@ if [[ -z ${SPACK_ROOT} ]]; then
   fi
 fi
 
+if [[ -z ${SPACK_VERSION} ]]; then
+  SPACK_VERSION=develop
+fi
+
 mkdir -p ${SPACK_ROOT}
 
 # Use spack@develop
 git clone https://github.com/spack/spack.git ${SPACK_ROOT}
 cd ${SPACK_ROOT}
-git checkout develop
+git checkout ${SPACK_VERSION}
 
 echo "echo \"Activating Spack Environment\"" >> /root/.bashrc
 echo "source ${SPACK_ROOT}/share/spack/setup-env.sh" >> /root/.bashrc
@@ -49,4 +51,3 @@ source /root/.bashrc
 
 rm -rf /root/.spack
 spack compiler find --scope site
-
